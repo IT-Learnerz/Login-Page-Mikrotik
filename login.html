@@ -32,11 +32,11 @@
         box-shadow: 0 4px 30px rgba(0,0,0,0.5);
     }
     .login-container {
-        background: (255,255,255,0.1);
+        background: rgba(255,255,255,0.1);
         backdrop-filter: blur(15px);
         padding: 30px;
         border-radius: 20px;
-        border: 1px solid rgba(255,255,2555,0.2);
+        border: 1px solid rgba(255,255,255,0.2);
         width: 320px;
         text-align: center;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -59,7 +59,7 @@
     }
     
     .input-field {
-        width: 100px;
+        width: 100%;
         padding: 12px;
         margin-bottom: 15px;
         border-radius: 8px;
@@ -87,6 +87,23 @@
 </head>
 
 <body class="background">
+    <script src="/md5.js"></script>
+    <script>
+        function doLogin() {
+            document.sendin.username.value = document.login.username.value;
+            document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challange)');
+            document.sendin.submit();
+            return false;
+        }
+    </script>
+
+<form name="sendin" action="$(link-login-only)" method="post" style="display:none">
+    <input type="hidden" name="username" />
+    <input type="hidden" name="password" />
+    <input tyoe="hidden" name="dst" value="$(link-orig)" />
+    <input type="hidden" name="popup" value="true" />
+</form>
+
     <div class="login-container">
         <div class="profile-pic"></div>
         <div class="user-info">
@@ -94,13 +111,14 @@
         <p>kelas: XII TKJ 1</p>
         <p>NISN: 14232</p>
         </div>
+        <br>
 
-<form class="login-form">
-    <input type="text" placeholder="Username" class="input-field">
-    <input type="password" placeholder="Password" class="input-field">
+<form class="login-form" name="login" action="$(link-login-only)" method="post" onSubmit="return doLogin()">
+    <input type="text" placeholder="Username" class="input-field" required>
+    <input type="password" placeholder="Password" class="input-field" required>
     <button type="submit" class="btn-login">Login</button>
 </form>
 </div>
-</body>
 
+</body>
 </html>
